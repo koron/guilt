@@ -1,0 +1,54 @@
+To: Git Mailing List <git@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	guilt@lists.josefsipek.net
+Cc: Brandon Philips <brandon@ifup.org>
+Subject: [ANNOUNCE] Guilt v0.31
+
+Guilt v0.31 is available for download.
+
+Guilt (Git Quilt) is a series of bash scripts which add a Mercurial
+queues-like functionality and interface to git.
+
+Tarballs:
+http://www.kernel.org/pub/linux/kernel/people/jsipek/guilt/
+
+Git repo:
+git://git.kernel.org/pub/scm/linux/kernel/git/jsipek/guilt.git
+
+
+This is a mostly bugfixes-only release to get the fixes that accumulated
+over the past several months out of the door.
+
+As always, patches, and other feedback is welcome.
+
+Josef "Jeff" Sipek.
+
+------------
+
+Changes since v0.30:
+
+Alan Jenkins (3):
+      Better "patch does not exist" checks
+      guilt-diff: allow paths
+      guilt-diff: behave sanely if no patch applied
+
+Eric Sandeen (1):
+      regression: fix failure with Git 1.5.5
+
+Jonas Fonseca (3):
+      Documentation: rename guiltlink macro to linkguilt
+      Documentation: improve AsciiDoc formatting of lists in guilt(7)
+      Documentation: customized the manpage headers to include version info
+
+Josef 'Jeff' Sipek (3):
+      Documentation: add proper 'linkguilt's
+      patchbomb: fix bashism
+      Guilt v0.31
+
+Shawn Starr (1):
+      guilt: Fix git version detection on Debian
+
+Theodore Ts'o (2):
+      must_commit_first: Make sure the index is up to date
+      Make guilt work even after git-sh-setup is moved out of the user's path
+
