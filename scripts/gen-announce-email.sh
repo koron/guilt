@@ -35,4 +35,4 @@ Changes since <<PREV_REV>>:
 DONE
 ) | sed -e "s/<<REV>>/$rev/g" -e "s/<<PREV_REV>>/$prev_rev/g"
 
-git-log --no-merges $prev_rev..$rev | git-shortlog
+git log --no-merges $prev_rev..$rev | git shortlog
