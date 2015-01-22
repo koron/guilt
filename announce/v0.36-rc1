@@ -1,0 +1,103 @@
+Guilt v0.36-rc1 is available for download.
+
+Guilt (Git Quilt) is a series of shell scripts which add a Mercurial
+queues-like functionality and interface to git.
+
+Tarballs:
+http://guilt.31bits.net/src/
+
+Git repo:
+git://repo.or.cz/guilt.git
+
+
+This is the first release candidate for the long awaited v0.36.  Yes, it's
+been *way* too long since the last release, but hopefully that will change
+going forward.  By far, the most changes come from Per Cederqvist who
+cleaned up some rather dark corners in the code.  Thanks!
+
+As always, patches, and other feedback is welcome.
+
+Josef "Jeff" Sipek.
+
+------------
+Changes since v0.35:
+
+Alan Jenkins (5):
+      [GUILT 1/6] Refuse to push corrupt patches
+      [GUILT 2/6] guilt-header: fix patch corruption
+      [GUILT 3/6] Handle paths that contain spaces
+      [GUILT 4/6] Run regression tests in a directory which contains spaces
+      [GUILT 5/6] Allow guilt scripts to be run from a directory which contains spaces
+
+Dave Chinner (1):
+      guilt: fix "from: xxx" filtering in the patch description
+
+Jari Aalto (1):
+      Documentation/Makefile: Run xmlto with --skip-validation
+
+Jonathan Nieder (1):
+      Drop unneeded git version check.
+
+Josef 'Jeff' Sipek (12):
+      [GUILT 6/6] Allow the regression tests to be run from a directory with spaces in
+      guilt: remove a useless cat
+      commit: don't lose commits
+      fix direct invocation messages
+      guilt: fix -h invocation
+      Documentation: update HOWTO to use 'guilt foo'
+      Documentation: clean up the makefile
+      Documentation: guilt & git don't use hyphenated commands
+      regress: setup_git_repo can assert that the repo is setup as intended
+      FreeBSD is much like Darwin
+      regress: cmd and shouldfail shouldn't print escapes
+      Guilt v0.36-rc1
+
+Per Cederqvist (43):
+      get rid of "cat: write error: Broken pipe" error message
+      [GUILT] handle branches with slashes in guilt-graph
+      Testsuite: get rid of "Broken pipe" errors from yes.
+      The tests should not fail if log.date or log.decorate are set.
+      get rid of "cat: write error: Broken pipe" error message
+      The tests should not fail if log.date or log.decorate are set.
+      Testsuite: get rid of "Broken pipe" errors from yes.
+      Handle empty patches and patches with only a header.
+      Fix fatal "guilt graph" error in sha1sum invocation.
+      Change git branch when patches are applied.
+      The tests should not fail if guilt.diffstat is set.
+      Allow "guilt delete -f" to run from a dir which contains spaces.
+      Added test case for "guilt delete -f".
+      Allow "guilt import-commit" to run from a dir which contains spaces.
+      "guilt new": Accept more than 4 arguments.
+      Fix the do_get_patch function.
+      Added test cases for "guilt fold".
+      Added more test cases for "guilt new": empty patches.
+      Test suite: properly check the exit status of commands.
+      Run test_failed if the exit status of a test script is bad.
+      test suite: remove pointless redirection.
+      "guilt header": more robust header selection.
+      Check that "guilt header '.*'" fails.
+      Use "git check-ref-format" to validate patch names.
+      Produce legal patch names in guilt-import-commit.
+      Fix backslash handling when creating names of imported patches.
+      "guilt graph" no longer loops when no patches are applied.
+      guilt-graph: Handle commas in branch names.
+      Check that "guilt graph" works when working on a branch with a comma.
+      "guilt graph": Handle patch names containing quotes.
+      The log.decorate setting should not influence import-commit.
+      The log.decorate setting should not influence patchbomb.
+      The log.decorate setting should not influence guilt rebase.
+      disp no longer processes backslashes.
+      "guilt push" now fails when there are no more patches to push.
+      "guilt pop" now fails when there are no more patches to pop.
+      Minor testsuite fix.
+      Fix coding style errors in t-061.sh.
+      Added guilt.reusebranch configuration option.
+      Added a short style guide, and Emacs settings.
+      Don't use "git log -p" in the test suite.
+      Improved doc and tests for guilt header.
+      Document the exit status of guilt push and guilt pop.
+
+Theodore Ts'o (2):
+      guilt: skip empty line after from: line in patch descriptoin
+      guilt: fix date parsing
+
