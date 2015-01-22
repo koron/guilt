@@ -11,16 +11,16 @@ if [ -z "$rev" -o -z "$prev_rev" ]; then
 fi
 
 (cat << DONE
-Guilt <<REV>> is available for download (once it mirrors out on kernel.org).
+Guilt <<REV>> is available for download.
 
-Guilt (Git Quilt) is a series of bash scripts which add a Mercurial
+Guilt (Git Quilt) is a series of shell scripts which add a Mercurial
 queues-like functionality and interface to git.
 
 Tarballs:
-http://www.kernel.org/pub/linux/kernel/people/jsipek/guilt/
+http://guilt.31bits.net/src/
 
 Git repo:
-git://git.kernel.org/pub/scm/linux/kernel/git/jsipek/guilt.git
+git://repo.or.cz/guilt.git
 
 
 <<SUMMARY>>
@@ -35,4 +35,4 @@ Changes since <<PREV_REV>>:
 DONE
 ) | sed -e "s/<<REV>>/$rev/g" -e "s/<<PREV_REV>>/$prev_rev/g"
 
-git log --no-merges $prev_rev..$rev | git shortlog
+git log --no-merges $prev_rev..$rev | git shortlog | cat
