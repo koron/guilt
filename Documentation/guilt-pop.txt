@@ -1,0 +1,40 @@
+guilt-pop(1)
+============
+
+NAME
+----
+guilt-pop - Pop patches from the tree
+
+SYNOPSIS
+--------
+include::usage-guilt-pop.txt[]
+
+OPTIONS
+-------
+--all::
+-a::
+	Pop all patches off the tree
+
+-f::
+	Force; discards any unrefreshed changes
+
+-n <num>::
+	Push specified number of patches
+
+<patchname>::
+	Pop all patches up to and including this patch off the tree
+
+If no patchname is given, pop the top-most patch.
+
+Exit with a non-zero exit status if requested to pop more patches
+than there are on the stack.
+
+Author
+------
+Written by Josef "Jeff" Sipek <jeffpc@josefsipek.net>
+
+Documentation
+-------------
+Documentation by Brandon Philips <brandon@ifup.org>
+
+include::footer.txt[]

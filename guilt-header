@@ -1,0 +1,101 @@
+#!/bin/sh
+#
+# Copyright (c) Josef "Jeff" Sipek, 2006-2013
+#
+
+USAGE="[-eE] [<patchname>]"
+if [ -z "$GUILT_VERSION" ]; then
+	echo "Invoking `basename "$0"` directly is no longer supported." >&2
+	exit 1
+fi
+
+_main() {
+
+case $# in
+	0)
+		patch=`get_top`
+		;;
+	1)
+		if [ "$1" = "-e" ]; then
+			edit=t
+			patch=`get_top`
+		elif [ "$1" = "-E" ]; then
+		    	edit=t
+		    	full=t
+			patch=`get_top`
+		else
+			patch="$1"
+		fi
+		;;
+	2)
+		if [ "$1" = "-e" ]; then
+		    edit=t
+		    patch="$2"
+		elif [ "$1" = "-E" ]; then
+		    edit=t
+		    full=t
+		    patch="$2"
+ 		else
+		    usage
+		fi
+		;;
+esac
+
+# are there any patches applied?
+[ -z "$patch" ] && die "No patches applied."
+
+# check that patch exists in the series
+TMP_FULL_SERIES=`get_tmp_file series`
+get_full_series > "$TMP_FULL_SERIES"
+found_patch=
+while read x; do
+	if [ "$x" = "$patch" ]; then
+		found_patch="$patch"
+		break
+	fi
+done < "$TMP_FULL_SERIES"
+if [ -z "$found_patch" ]; then
+	TMP_MATCHES=`get_tmp_file series`
+	grep "$patch" < "$TMP_FULL_SERIES" > "$TMP_MATCHES"
+	nr=`wc -l < $TMP_MATCHES`
+	if [ $nr -gt 1 ]; then
+		echo "$patch does not uniquely identify a patch. Did you mean any of these?" >&2
+		sed 's/^/  /' "$TMP_MATCHES" >&2
+		rm -f "$TMP_MATCHES" "$TMP_FULL_SERIES"
+		exit 1
+	elif [ $nr -eq 0 ]; then
+		rm -f "$TMP_MATCHES" "$TMP_FULL_SERIES"
+		die "Patch $patch is not in the series"
+	fi
+	found_patch=`cat $TMP_MATCHES`
+	rm -f "$TMP_MATCHES"
+fi
+rm -f "$TMP_FULL_SERIES"
+patch="$found_patch"
+
+# FIXME: warn if we're editing an applied patch
+
+TMP_MSG=`get_tmp_file msg`
+TMP_DIFF=`get_tmp_file diff`
+
+if [ -z "$edit" ]; then
+	do_get_header "$GUILT_DIR/$branch/$patch"
+else
+    	if [ -n "$full" ]; then
+	    git_editor "$GUILT_DIR/$branch/$patch"
+	    exit $?
+	fi
+	do_get_full_header "$GUILT_DIR/$branch/$patch" > "$TMP_MSG"
+	do_get_patch "$GUILT_DIR/$branch/$patch" > "$TMP_DIFF"
+	git_editor "$TMP_MSG"
+	mv "$GUILT_DIR/$branch/$patch" "$GUILT_DIR/$branch/$patch~"
+
+	(
+		cat "$TMP_MSG"
+		cat "$TMP_DIFF"
+	) > "$GUILT_DIR/$branch/$patch"
+fi
+
+rm -f "$TMP_MSG" "$TMP_DIFF"
+
+}
