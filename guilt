@@ -197,15 +197,15 @@ get_branch()
 
 verify_branch()
 {
-	[ ! -d "$GIT_DIR/patches" ] &&
+	[ ! -d "$GUILT_DIR" ] &&
 		die "Patches directory doesn't exist, try guilt init"
-	[ ! -d "$GIT_DIR/patches/$branch" ] &&
+	[ ! -d "$GUILT_DIR/$branch" ] &&
 		die "Branch $branch is not initialized, try guilt init"
-	[ ! -f "$GIT_DIR/patches/$branch/series" ] &&
+	[ ! -f "$GUILT_DIR/$branch/series" ] &&
 		die "Branch $branch does not have a series file"
-	[ ! -f "$GIT_DIR/patches/$branch/status" ] &&
+	[ ! -f "$GUILT_DIR/$branch/status" ] &&
 		die "Branch $branch does not have a status file"
-	[ -f "$GIT_DIR/patches/$branch/applied" ] &&
+	[ -f "$GUILT_DIR/$branch/applied" ] &&
 		die "Warning: Branch $branch has 'applied' file - guilt is not compatible with stgit"
 }
 
@@ -906,7 +906,17 @@ reuse_branch=`git config --bool guilt.reusebranch`
 # The following gets run every time this file is source'd
 #
 
-GUILT_DIR="$GIT_DIR/patches"
+get_patches_dir()
+{
+  cd_to_toplevel
+  patches_dir=`git config --local --path guilt.patchesdir`
+  if [ -z "$patches_dir" ] ; then
+    echo "$GIT_DIR/patches"
+  else
+    readlink -f "$patches_dir"
+  fi
+}
+GUILT_DIR=`get_patches_dir`
 
 # To make it harder to accidentally do "git push" with a guilt patch
 # applied, "guilt push" changes branch from e.g. "master" to
@@ -941,8 +951,8 @@ if [ -z "$DO_NOT_CHECK_BRANCH_EXISTENCE" ]; then
 	# otherwise nothing can do what's necessary to bring the repo into a
 	# useable state)
 	if [ -z "$DO_NOT_CHECK_STATUS_FILE_FORMAT" ]; then
-		[ -s "$GIT_DIR/patches/$branch/status" ] &&
-			grep "^[0-9a-f]\{40\}:" "$GIT_DIR/patches/$branch/status" > /dev/null &&
+		[ -s "$GUILT_DIR/$branch/status" ] &&
+			grep "^[0-9a-f]\{40\}:" "$GUILT_DIR/$branch/status" > /dev/null &&
 			die "Status file appears to use old format, try guilt repair --status"
 	fi
 fi
