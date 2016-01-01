@@ -40,6 +40,7 @@ install: man
 	$(INSTALL) -m644 $(DOC_MAN7) $(DESTDIR)$(man7dir)
 
 install-html: html
+	$(INSTALL) -d -m755 $(DESTDIR)$(htmldir)
 	$(INSTALL) -m644 $(DOC_HTML) $(DESTDIR)$(htmldir)
 
 #
@@ -60,14 +61,16 @@ cmds.txt: cmd-list.sh $(MAN1_TXT)
 
 guilt.7 guilt.html: guilt.txt footer.txt version.txt
 
+guilt.xml: cmds.txt
+
 clean:
 	rm -f *.xml *.html *.1 *.7 doc.dep
 	rm -f cmds.txt
 	rm -f usage-*.txt
 	rm -f version.txt
 
-usage-%.txt: $(MAN1_TXT) usage.sh
-	sh ./usage.sh
+usage-guilt-%.txt: ../guilt-% usage.sh
+	sh ./usage.sh $<
 
 %.html : %.txt footer.txt version.txt
 	$(ASCIIDOC) -b xhtml11 -d manpage -f asciidoc.conf $(ASCIIDOC_EXTRA) $<
