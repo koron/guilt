@@ -31,9 +31,17 @@ for rev in `git rev-list $rhash`; do
 	# Try to convert the first line of the commit message to a
 	# valid patch name.
 	fname=`printf %s "$s" | sed -e "s/&/and/g" -e "s/[ :]/_/g" -e "s,[/\\],-,g" \
-			-e "s/['\\[{}]//g" -e 's/]//g' -e 's/\*/-/g' \
+			-e "s/['\\[{}<>(),]//g" -e 's/]//g' -e 's/\*/-/g' \
 			-e 's/\?/-/g' -e 's/\.\.\.*/./g' -e 's/^\.//' \
 			-e 's/\.patch$//' -e 's/\.$//' | tr A-Z a-z`
+
+	if [ `expr length "$fname"` -gt 80 ] ; then
+		# Limit the patch length to about 80 chars.  While this is
+		# arbitrary, we have to have a limit to avoid trying to
+		# create filenames that are too long for the filesystem to
+		# handle.
+		fname=`expr substr "$fname" 1 80`
+	fi
 
 	if ! valid_patchname "$fname"; then
 		# Try harder to make it a legal commit name by
