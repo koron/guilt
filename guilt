@@ -998,6 +998,19 @@ pager="more"
 
 UNAME_S=`uname -s`
 
+# Fix uname output variations in Windows MSYS/MINGW environments
+case "$UNAME_S" in
+  MINGW32_NT-*)
+    UNAME_S="MINGW32_NT"
+    ;;
+  MINGW64_NT-*)
+    UNAME_S="MINGW64_NT"
+    ;;
+  MSYS_NT-*)
+    UNAME_S="MSYS_NT"
+    ;;
+esac
+
 if [ -r "$GUILT_PATH/os.$UNAME_S" ]; then
 	. "$GUILT_PATH/os.$UNAME_S"
 elif [ -r "$GUILT_PATH/../lib/guilt/os.$UNAME_S" ]; then
